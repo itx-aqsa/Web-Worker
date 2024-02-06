@@ -19,7 +19,7 @@ This project demonstrates the usage of Web Workers for performing sorting and ad
 **Setup**:
 
 1. Clone the repository to your local machine:
-   git clone https://github.com/your-username/web-workers-sorting-addition.git
+   git clone https://github.com/itx-aqsa/web-worker.git
 2. Navigate to the project directory:
 3. Open the index.html file in a modern web browser.
 

@@ -30,8 +30,10 @@ This project demonstrates the usage of Web Workers for performing sorting and ad
 3. Observe the execution time displayed in milliseconds via alert boxes for both scenarios.
 4. Compare the performance difference between using Web Workers and not using Web Workers.
 
-**Files**
+**Files**:
 
 **index.html:** HTML file containing the main structure and JavaScript code for handling user interaction.
+
 **sortWorker.js:** JavaScript file containing the Web Worker code for sorting data.
+
 **addWorker.js:** JavaScript file containing the Web Worker code for performing addition.

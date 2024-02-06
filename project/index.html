@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Workers Sorting and Addition</title>
+</head>
+<body>
+
+  <h1>Web Workers Sorting and Addition</h1>
+
+  <button onclick="processDataWithWorkers()">Process Data With Workers</button>
+  <button onclick="processDataWithoutWorkers()">Process Data Without Workers</button>
+
+  <script>
+    const arraySize = 1000000; // Adjust the array size as needed
+    const dataArray = Array.from({ length: arraySize }, () => Math.random());
+
+  function processDataWithWorkers() {
+  const startTime = performance.now();
+
+  // Create a Web Worker for sorting
+  const sortWorker = new Worker("sortWorker.js");
+
+  // Post the data to the sorting worker
+  sortWorker.postMessage(dataArray);
+
+  // Create a Web Worker for addition
+  const addWorker = new Worker("addWorker.js");
+
+  // Post the data to the addition worker
+  addWorker.postMessage(dataArray);
+
+  // Counter to track completed workers
+  let workersCompleted = 0;
+
+  // Function to handle worker completion
+  function handleWorkerCompletion() {
+    workersCompleted++;
+
+    // If both workers have completed, trigger the alert
+    if (workersCompleted === 2) {
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+
+      alert("Sorting and Addition with workers took: " + duration + " milliseconds");
+
+      // Terminate the workers
+      sortWorker.terminate();
+      addWorker.terminate();
+    }
+  }
+
+  // Receive the sorted data from the sorting worker
+  sortWorker.onmessage = function (event) {
+    const sortedData = event.data;
+
+    // Increment the completed worker counter
+    handleWorkerCompletion();
+  };
+
+  // Receive the result of addition from the addition worker
+  addWorker.onmessage = function (addEvent) {
+    const sumResult = addEvent.data;
+
+    // Increment the completed worker counter
+    handleWorkerCompletion();
+  };
+}
+
+
+    function processDataWithoutWorkers() {
+      const startTime = performance.now();
+
+      // Perform sorting without Web Workers
+      const sortedDataWithoutWorker = dataArray.slice().sort();
+
+      // Perform addition without Web Workers
+      const sumResultWithoutWorker = dataArray.reduce((acc, val) => acc + val, 0);
+
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+
+      alert("Sorting and Addition without workers took: " + duration + " milliseconds");
+    }
+  </script>
+
+</body>
+</html>
